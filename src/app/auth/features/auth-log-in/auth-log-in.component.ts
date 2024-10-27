@@ -24,6 +24,7 @@ export default class AuthLogInComponent {
   private _router = inject(Router);
 
   form = this._formBuilder.group<LogInForm>({
+
     email: this._formBuilder.control(null, [
       Validators.required,
       Validators.email,
