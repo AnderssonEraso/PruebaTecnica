@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import AuthSignUpComponent from './auth-sign-up.component';
 
-import { AuthSignUpComponent } from './auth-sign-up.component';
 
 describe('AuthSignUpComponent', () => {
   let component: AuthSignUpComponent;
@@ -11,7 +11,7 @@ describe('AuthSignUpComponent', () => {
       imports: [AuthSignUpComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(AuthSignUpComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
