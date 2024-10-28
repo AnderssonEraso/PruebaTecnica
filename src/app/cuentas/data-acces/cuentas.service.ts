@@ -1,12 +1,14 @@
 import { computed, inject, Injectable, signal } from "@angular/core";
 import { SupabaseService } from "../../shared/data-acces/supabase.service";
+import { AuthService } from "../../auth/data-acces/auth.service";
+import { __values } from "tslib";
 
-interface Cuenta {
+export interface Cuenta {
   idcuenta: string;
   numerocuenta: string;
   tipocuenta: string;
   saldoactual: string;
-  id_user: string;
+  user_id: string;
 }
 
 interface CuentaState {
@@ -20,6 +22,7 @@ interface CuentaState {
 export class CuentasService {
 
   private _supabaseClient = inject(SupabaseService).supabaseClient;
+  private _authService = inject(AuthService);
 
   private _state = signal<CuentaState>({
     cuentas: [],
@@ -38,7 +41,7 @@ export class CuentasService {
         ...state,
         loading: true,
       }));
-
+      const { data: { session } } = await this._authService.session();
       const { data } = await this._supabaseClient.from('cuentas').select().returns<Cuenta[]>();
       console.log(data);
 
@@ -58,6 +61,48 @@ export class CuentasService {
         ...state,
         loading: false,
       }));
+    }
+  }
+  async insertCuenta(cuenta: { tipocuenta: string, saldoactual: string }) {
+    try {
+      const { data: { session } } = await this._authService.session();
+
+      const response = await this._supabaseClient.from('cuentas').insert({
+        user_id: session?.user.id,
+        tipocuenta: cuenta.tipocuenta,
+        saldoactual: cuenta.saldoactual,
+      });
+      console.log(response);
+      this.getAllCuentas();
+    } catch (error) {
+
+    }
+
+  }
+  async updateCuenta(cuenta: { tipocuenta: string, saldoactual: string, idcuenta: string }) {
+    try {
+      await this._supabaseClient
+        .from('cuentas')
+        .update({
+          tipocuenta: cuenta.tipocuenta,
+          saldoactual: cuenta.saldoactual,
+        })
+        .eq('idcuenta', cuenta.idcuenta);
+      this.getAllCuentas();
+    } catch (error) {
+
+    }
+  }
+
+  async deleteCuenta(idcuenta: string){
+    try {
+      await this._supabaseClient
+        .from('cuentas')
+        .delete()
+        .eq('idcuenta', idcuenta);
+      this.getAllCuentas();
+    } catch (error) {
+
     }
   }
 }

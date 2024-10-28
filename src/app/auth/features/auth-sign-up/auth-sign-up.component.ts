@@ -1,26 +1,30 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../data-acces/auth.service';
+
 
 interface SignUpForm {
   email: FormControl<null | string>;
   password: FormControl<null | string>;
 }
 
-
 @Component({
   selector: 'app-auth-sign-up',
   standalone: true,
   imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './auth-sign-up.html',
-  styleUrl: './auth-sign-up.component.css'
+  styleUrl: './auth-sign-up.component.scss',
 })
-
 export default class AuthSignUpComponent {
   private _formBuilder = inject(FormBuilder);
+
   private _authService = inject(AuthService);
-  private _router = inject(Router);
 
   form = this._formBuilder.group<SignUpForm>({
     email: this._formBuilder.control(null, [
@@ -34,18 +38,16 @@ export default class AuthSignUpComponent {
     if (this.form.invalid) return;
 
     try {
-      const { error } = await this._authService.logIn({
+      const authResponse = await this._authService.signUp({
         email: this.form.value.email ?? '',
         password: this.form.value.password ?? '',
       });
 
-      if (error) throw error;
+      if (authResponse.error) throw authResponse.error;
 
-      this._router.navigateByUrl('/');
+      alert('Por favor revisa tu correo!');
     } catch (error) {
-      if (error instanceof Error) {
-        console.log(error);
-      }
+      console.error(error);
     }
   }
 }

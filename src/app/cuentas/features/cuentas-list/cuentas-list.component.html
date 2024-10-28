@@ -15,7 +15,49 @@
   </nav>
 
   <div class="max-w-screen-xl mx-auto">
+    <div>
+      <form class="max-w-sm mx-auto" [formGroup]="form">
+        <div class="mb-5">
+          <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID</label>
+          <input type="text" id="large-input" placeholder="Por generar" readonly
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+        </div>
+        <div class="mb-5">
+          <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Número de
+            cuenta</label>
+          <input type="text" id="base-input" placeholder="Por generar" readonly
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+        </div>
+        <div class="mb-5">
+          <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" required>Tipo de
+            cuenta</label>
+          <input type="text" id="base-input"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            formControlName="tipocuenta" />
+        </div>
+        <div class="mb-5">
+          <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Saldo
+            actual</label>
+          <input type="number" id="base-input" requiered
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            formControlName="saldoactual" />
+        </div>
+        <div class="mb-5">
+          <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Id del
+            usuario</label>
+          <input type="text" id="base-input" placeholder="Generado con el id de su usuario" readonly
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" S/>
+        </div>
+        <div>
 
+          <button
+            class="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+            (click)="newCuenta()">
+          Guardar
+          </button>
+        </div>
+      </form>
+    </div>
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg pt-20">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -36,25 +78,33 @@
           <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
 
-            {{cuenta.idcuenta}}
+              {{cuenta.idcuenta}}
             </th>
             <td class="px-6 py-4">{{cuenta.numerocuenta}}</td>
             <td class="px-6 py-4">{{cuenta.tipocuenta}}</td>
             <td class="px-6 py-4">{{cuenta.saldoactual}}</td>
-            <td class="px-6 py-4">{{cuenta.id_user}}</td>
+            <td class="px-6 py-4">{{cuenta.user_id}}</td>
             <td class="flex items-center px-6 py-4">
-              <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-              <a class="font-medium text-red-600 dark:text-red-500 hover:underline ms-3">Eliminar</a>
+              <a
+                class="font-medium text-blue-600 dark:text-blue-500 cursor-pointer"
+                (click)="editCuenta(cuenta)"
+                >Editar</a
+              >
+              <a
+                class="font-medium text-red-600 dark:text-red-500 ms-3 cursor-pointer"
+                (click)="deleteCuenta(cuenta)"
+                >Eliminar</a
+              >
             </td>
           </tr>
-        } @empty {
+          } @empty {
           <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
             <td class="px-6 py-4 text-center" colspan="6">
               No hay ningun tipo de cuenta para este usuario
             </td>
           </tr>
 
-        }
+          }
 
           }
 
